@@ -19,7 +19,8 @@
         {{row.email}},
         {{row.tel}}
         <input type="button" value="삭제" onclick="fdel({{row.userid}})">
-    <input type="button" value="수정" onclick="fEdit('{{row.userid}}', '{{row.username}}', '{{row.position}}','{{row.email}}', '{{row.tel}}')">
+        <input type="button" value="수정" onclick="fEdit('{{row.userid}}', '{{row.username}}', '{{row.position}}','{{row.email}}', '{{row.tel}}')">
+        <input type="button" value="말하기" onclick="fSound()">
         <br>
     {% endfor %}
 
@@ -53,6 +54,9 @@
                 frm.position.value = position;
                 frm.email.value = email;
                 frm.tel.value = tel;
+        }
+        function fSound(){
+            location.href="/playmp3"
         }
     </script>
 </body>
