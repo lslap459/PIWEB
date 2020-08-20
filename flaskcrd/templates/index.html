@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>직원 검색 "{{txtsearch}}"</h1>
+    <form action="/search" method="POST">
+        <input type="text" name="txtsearch" placeholder="찾고자 하는 직원명을 입력하세요" style="width: 300px;">
+        <input type="submit" value="검색">
+    </form>
+    <h1>직원 리스트</h1>
+    {% for row in employee2 %}
+        {{row.username}},
+        {{row.userid}},
+        {{row.position}},
+        {{row.email}},
+        {{row.tel}}
+        <input type="button" value="삭제" onclick="fdel({{row.userid}})">
+    <input type="button" value="수정" onclick="fEdit('{{row.userid}}', '{{row.username}}', '{{row.position}}','{{row.email}}', '{{row.tel}}')">
+        <br>
+    {% endfor %}
+
+    <h1>직원추가</h1>
+    <form action="/insert" method="POST">
+    직원명<input type="text" name="username"><br>
+    직위명<input type="text" name="position"><br>
+    이메일<input type="text" name="email"><br>
+    전화번호<input type="text" name="tel"><br>
+    <input type="submit" value="저장">
+    </form>
+    <h1>직원수정</h1>
+    <form name="frmEdit" action="/update" method="POST">
+    직원ID<input type="text" name="userid" readonly><br>
+    직원명<input type="text" name="username"><br>
+    직위명<input type="text" name="position"><br>
+    이메일<input type="text" name="email"><br>
+    전화번호<input type="text" name="tel"><br>
+    <input type="submit" value="수정하기">
+    </form>
+    <script>
+        function fdel(uid){
+            if(confirm(uid+"정말로 삭제하시겠습니까?")==false)return;
+            location.href = "/delete/"+uid;
+        }
+
+        function fEdit(userid, username, position, email, tel){
+            var frm = document.frmEdit;
+                frm.userid.value = userid;
+                frm.username.value = username;
+                frm.position.value = position;
+                frm.email.value = email;
+                frm.tel.value = tel;
+        }
+    </script>
+</body>
+</html>
