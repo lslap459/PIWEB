@@ -9,6 +9,14 @@ app.config['SQlALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
+class tblLangAlarmConf(db.Model):
+    __tablename__ = 'tblLangAlarmConf'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    alarmtime = db.Column(db.DateTime(timezone=True),
+    default=datetime.datetime.now)
+    def __init__(self, alarmtime):
+        self.alarmtime = alarmtime
+
 class LangAlarmWord(db.Model):
     __tablename__ = 'tblLangAlarmWord'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -28,6 +36,7 @@ class LangAlarmWord(db.Model):
 def index():
     return render_template('index.html')
 
+
 @app.route('/pages/<page>')
 def pages(page):
     return render_template('/pages/'+page)
@@ -41,12 +50,22 @@ def bbs(page):
     all_data = LangAlarmWord.query.order_by(LangAlarmWord.id.desc()).all()
     return render_template('/bbs/'+page, langwords = all_data)
 
-@app.route('/bbs_insert', methods=['POST'])
-def bbsinsert():
+@app.route('/bbs/list.html')
+def bbslist():
+    read_data = LangAlarmWord.query.all()
+    return render_template('/bbs/list.html', langwords = read_data)
+
+@app.route('/bbs/add.html')
+def bbslistadd():
+    read_data = LangAlarmWord.query.all()
+    return render_template('/bbs/add.html', langwords = read_data)
+
+@app.route('/bbs_save_add', methods=['POST'])
+def bbsadd():
     category = request.form['category']
     word = request.form['word']
     memo = request.form['memo']
     newWord = LangAlarmWord(category,word,memo)
     db.session.add(newWord)
     db.session.commit()
-    return "success"
+    return "add success"
